@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Single Book Display</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 70%;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        img {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .back {
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1 id="title"></h1>
+    <img id="thumbnail" src="">
+    <p><strong>Authors:</strong> <span id="authors"></span></p>
+    <p><strong>Publisher:</strong> <span id="publisher"></span></p>
+    <p><strong>Published Date:</strong> <span id="publishedDate"></span></p>
+    <p><strong>Page Count:</strong> <span id="pageCount"></span></p>
+    <p><strong>Categories:</strong> <span id="categories"></span></p>
+
+    <h3>Description</h3>
+    <p id="description"></p>
+
+    <p>
+        <a id="preview" href="#" target="_blank">Preview This Book</a>
+    </p>
+
+    <a href="index.html" class="back">← Back to Home</a>
+</div>
+
+<script>
+$(document).ready(function(){
+
+    $.getJSON("google-books-book.json", function(data){
+
+        let book = data.volumeInfo;
+
+        $("#title").text(book.title || "No Title Available");
+        $("#authors").text(book.authors ? book.authors.join(", ") : "Unknown");
+        $("#publisher").text(book.publisher || "Not Available");
+        $("#publishedDate").text(book.publishedDate || "Not Available");
+        $("#pageCount").text(book.pageCount || "Not Available");
+        $("#categories").text(book.categories ? book.categories.join(", ") : "Not Available");
+        $("#description").html(book.description || "No description available.");
+        $("#thumbnail").attr("src", book.imageLinks ? book.imageLinks.thumbnail : "");
+        $("#preview").attr("href", book.previewLink || "#");
+
+    });
+
+});
+</script>
+
+</body>
+</html>
