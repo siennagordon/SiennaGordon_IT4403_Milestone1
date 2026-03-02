@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Search Results</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 85%;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .book {
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0;
+        }
+
+        .book img {
+            width: 120px;
+        }
+
+        .book-info h3 {
+            margin: 0;
+        }
+
+        .back {
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Book Search Results</h1>
+    <div id="bookList"></div>
+
+    <a href="index.html" class="back">← Back to Home</a>
+</div>
+
+<script>
+$(document).ready(function(){
+
+    $.getJSON("google-books-search.json", function(data){
+
+        $.each(data.items, function(index, item){
+
+            let book = item.volumeInfo;
+
+            let html = `
+                <div class="book">
+                    <img src="${book.imageLinks ? book.imageLinks.thumbnail : ''}">
+                    <div class="book-info">
+                        <h3>${book.title || "No Title"}</h3>
+                        <p><strong>Author:</strong> ${book.authors ? book.authors.join(", ") : "Unknown"}</p>
+                        <p><strong>Publisher:</strong> ${book.publisher || "Not Available"}</p>
+                        <a href="${book.previewLink || '#'}" target="_blank">Preview Book</a>
+                    </div>
+                </div>
+            `;
+
+            $("#bookList").append(html);
+
+        });
+
+    });
+
+});
+</script>
+
+</body>
+</html>
